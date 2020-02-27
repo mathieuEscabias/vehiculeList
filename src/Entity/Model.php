@@ -21,6 +21,11 @@ class Model
      */
     private $model;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\brand", cascade={"persist", "remove"})
+     */
+    private $brand;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -34,6 +39,18 @@ class Model
     public function setModel(string $model): self
     {
         $this->model = $model;
+
+        return $this;
+    }
+
+    public function getBrand(): ?brand
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?brand $brand): self
+    {
+        $this->brand = $brand;
 
         return $this;
     }

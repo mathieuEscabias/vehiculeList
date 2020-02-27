@@ -46,6 +46,11 @@ class User
      */
     private $company;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\usedCar", inversedBy="usedCar", cascade={"persist", "remove"})
+     */
+    private $usedCar;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -124,6 +129,18 @@ class User
         if ($company->getUser() !== $this) {
             $company->setUser($this);
         }
+
+        return $this;
+    }
+
+    public function getUsedCar(): ?usedCar
+    {
+        return $this->usedCar;
+    }
+
+    public function setUsedCar(?usedCar $usedCar): self
+    {
+        $this->usedCar = $usedCar;
 
         return $this;
     }

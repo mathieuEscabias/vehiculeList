@@ -46,6 +46,23 @@ class UsedCar
      */
     private $fuel;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="usedCar", cascade={"persist", "remove"})
+     */
+    private $usedCar;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\category", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\car", inversedBy="car", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $car;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +136,48 @@ class UsedCar
     public function setFuel(string $fuel): self
     {
         $this->fuel = $fuel;
+
+        return $this;
+    }
+
+    public function getUsedCar(): ?User
+    {
+        return $this->usedCar;
+    }
+
+    public function setUsedCar(?User $usedCar): self
+    {
+        $this->usedCar = $usedCar;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUsedCar = null === $usedCar ? null : $this;
+        if ($usedCar->getUsedCar() !== $newUsedCar) {
+            $usedCar->setUsedCar($newUsedCar);
+        }
+
+        return $this;
+    }
+
+    public function getCategory(): ?category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getCar(): ?car
+    {
+        return $this->car;
+    }
+
+    public function setCar(car $car): self
+    {
+        $this->car = $car;
 
         return $this;
     }

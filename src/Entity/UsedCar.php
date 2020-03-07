@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\UsedCarRepository")
  */
 class UsedCar
@@ -57,11 +59,7 @@ class UsedCar
      */
     private $category;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\car", inversedBy="car", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $car;
+
 
     public function getId(): ?int
     {
@@ -170,15 +168,4 @@ class UsedCar
         return $this;
     }
 
-    public function getCar(): ?car
-    {
-        return $this->car;
-    }
-
-    public function setCar(car $car): self
-    {
-        $this->car = $car;
-
-        return $this;
-    }
 }

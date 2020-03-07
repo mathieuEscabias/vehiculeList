@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
-  * @ApiResource()
- * @ORM\Entity(repositoryClass="App\Repository\BrandRepository")
+ * @ApiResource()
+ * @ORM\Entity(repositoryClass="App\Repository\FuelRepository")
  */
-class Brand
+class Fuel
 {
     /**
      * @ORM\Id()
@@ -21,21 +21,21 @@ class Brand
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $brand;
+    private $fuel;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBrand(): ?string
+    public function getFuel(): ?string
     {
-        return $this->brand;
+        return $this->fuel;
     }
 
-    public function setBrand(string $brand): self
+    public function setFuel(string $fuel): self
     {
-        $this->brand = $brand;
+        $this->fuel = $fuel;
 
         return $this;
     }

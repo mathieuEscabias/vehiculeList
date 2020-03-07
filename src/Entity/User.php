@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
+
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User
@@ -20,17 +21,22 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $lastName;
+    private $companyName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $firstName;
+    private $phoneNumber;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $email;
+
+    /**
+     * @ORM\Column(type="string", length=4000)
+     */
+    private $userPhoto;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -40,43 +46,43 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $photoUser;
+    private $siret;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Company", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="user")
      */
-    private $company;
+    private $articles;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\usedCar", inversedBy="usedCar", cascade={"persist", "remove"})
-     */
-    private $usedCar;
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getLastName(): ?string
+    public function getCompanyName(): ?string
     {
-        return $this->lastName;
+        return $this->companyName;
     }
 
-    public function setLastName(string $lastName): self
+    public function setCompanyName(string $companyName): self
     {
-        $this->lastName = $lastName;
+        $this->companyName = $companyName;
 
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getPhoneNumber(): ?string
     {
-        return $this->firstName;
+        return $this->phoneNumber;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setPhoneNumber(string $phoneNumber): self
     {
-        $this->firstName = $firstName;
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
@@ -93,6 +99,18 @@ class User
         return $this;
     }
 
+    public function getUserPhoto(): ?string
+    {
+        return $this->userPhoto;
+    }
+
+    public function setUserPhoto(string $userPhoto): self
+    {
+        $this->userPhoto = $userPhoto;
+
+        return $this;
+    }
+
     public function getPassword(): ?string
     {
         return $this->password;
@@ -105,43 +123,45 @@ class User
         return $this;
     }
 
-    public function getPhotoUser(): ?string
+    public function getSiret(): ?string
     {
-        return $this->photoUser;
+        return $this->siret;
     }
 
-    public function setPhotoUser(string $photoUser): self
+    public function setSiret(string $siret): self
     {
-        $this->photoUser = $photoUser;
+        $this->siret = $siret;
 
         return $this;
     }
 
-    public function getCompany(): ?Company
+    /**
+     * @return Collection|Article[]
+     */
+    public function getArticles(): Collection
     {
-        return $this->company;
+        return $this->articles;
     }
 
-    public function setCompany(Company $company): self
+    public function addArticle(Article $article): self
     {
-        $this->company = $company;
-
-        // set the owning side of the relation if necessary
-        if ($company->getUser() !== $this) {
-            $company->setUser($this);
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setUser($this);
         }
 
         return $this;
     }
 
-    public function getUsedCar(): ?usedCar
+    public function removeArticle(Article $article): self
     {
-        return $this->usedCar;
-    }
-
-    public function setUsedCar(?usedCar $usedCar): self
-    {
-        $this->usedCar = $usedCar;
+        if ($this->articles->contains($article)) {
+            $this->articles->removeElement($article);
+            // set the owning side to null (unless already changed)
+            if ($article->getUser() === $this) {
+                $article->setUser(null);
+            }
+        }
 
         return $this;
     }

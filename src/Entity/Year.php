@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\FuelRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\YearRepository")
  */
-class Fuel
+class Year
 {
     /**
      * @ORM\Id()
@@ -19,12 +19,12 @@ class Fuel
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
      */
-    private $fuelType;
+    private $year;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Car", mappedBy="fuel")
+     * @ORM\OneToMany(targetEntity="App\Entity\Car", mappedBy="year")
      */
     private $cars;
 
@@ -38,14 +38,14 @@ class Fuel
         return $this->id;
     }
 
-    public function getFuelType(): ?string
+    public function getYear(): ?int
     {
-        return $this->fuelType;
+        return $this->year;
     }
 
-    public function setFuelType(string $fuelType): self
+    public function setYear(int $year): self
     {
-        $this->fuelType = $fuelType;
+        $this->year = $year;
 
         return $this;
     }
@@ -62,7 +62,7 @@ class Fuel
     {
         if (!$this->cars->contains($car)) {
             $this->cars[] = $car;
-            $car->setFuel($this);
+            $car->setYear($this);
         }
 
         return $this;
@@ -73,8 +73,8 @@ class Fuel
         if ($this->cars->contains($car)) {
             $this->cars->removeElement($car);
             // set the owning side to null (unless already changed)
-            if ($car->getFuel() === $this) {
-                $car->setFuel(null);
+            if ($car->getYear() === $this) {
+                $car->setYear(null);
             }
         }
 

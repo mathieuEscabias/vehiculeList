@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\FuelRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CritAirRepository")
  */
-class Fuel
+class CritAir
 {
     /**
      * @ORM\Id()
@@ -19,12 +19,12 @@ class Fuel
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
      */
-    private $fuelType;
+    private $critAirNumber;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Car", mappedBy="fuel")
+     * @ORM\OneToMany(targetEntity="App\Entity\Car", mappedBy="critAir")
      */
     private $cars;
 
@@ -38,14 +38,14 @@ class Fuel
         return $this->id;
     }
 
-    public function getFuelType(): ?string
+    public function getCritAirNumber(): ?int
     {
-        return $this->fuelType;
+        return $this->critAirNumber;
     }
 
-    public function setFuelType(string $fuelType): self
+    public function setCritAirNumber(int $critAirNumber): self
     {
-        $this->fuelType = $fuelType;
+        $this->critAirNumber = $critAirNumber;
 
         return $this;
     }
@@ -62,7 +62,7 @@ class Fuel
     {
         if (!$this->cars->contains($car)) {
             $this->cars[] = $car;
-            $car->setFuel($this);
+            $car->setCritAir($this);
         }
 
         return $this;
@@ -73,8 +73,8 @@ class Fuel
         if ($this->cars->contains($car)) {
             $this->cars->removeElement($car);
             // set the owning side to null (unless already changed)
-            if ($car->getFuel() === $this) {
-                $car->setFuel(null);
+            if ($car->getCritAir() === $this) {
+                $car->setCritAir(null);
             }
         }
 
